@@ -1,4 +1,5 @@
 program init
+  include 'xmp_lib.h'
 !$xmp nodes p(2)
 !$xmp template t(10)
 !$xmp distribute t(block) onto p
@@ -10,7 +11,7 @@ program init
   end do
 
   do i=1,10
-    print *, a(i)
+    print *, xmp_node_num(), a(i)
   end do
 
 end program init

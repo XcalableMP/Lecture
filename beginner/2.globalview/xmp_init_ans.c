@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <xmp.h>
 #pragma xmp nodes p(2)
 #pragma xmp template t(0:9)
 #pragma xmp distribute t(block) onto p
@@ -14,7 +15,7 @@ int main(){
 
 #pragma xmp loop on t(i)
   for(i=0;i<10;i++)
-    printf("%d\n", a[i]);
+    printf("[%d] %d\n", xmp_node_num(), a[i]);
 
   return 0;
 }
