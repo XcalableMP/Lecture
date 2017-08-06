@@ -16,12 +16,11 @@ int main(){
 
   if(xmpc_this_image() == 0){
     a[0:3] = a[5:3]:[1];            // Get
-    printf("My image is %d:\n", me);
     for(i=0;i<10;i++)
       printf("  a[%d] = %d\n", i, a[i]);
 
     b[0:5:2] = b[0:5:2]:[1];       // Get
-    printf("\nMy image is %d:\n", me);
+    printf("\n");
     for(i=0;i<10;i++)
       printf("  b[%d] = %d\n", i, b[i]);
 
@@ -30,7 +29,7 @@ int main(){
   xmp_sync_all(NULL);
 
   if(xmpc_this_image() == 0){
-    printf("\nMy image is %d:\n", me);
+    printf("\n");
     for(i=0;i<10;i++){
       for(j=0;j<10;j++){
 	printf("  %3d",c[i][j]);
