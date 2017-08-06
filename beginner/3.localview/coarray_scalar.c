@@ -1,23 +1,23 @@
 #include <stdio.h>
 #include <xmp.h>
 
-int val:[*], status, tmp = 0;
+int val:[*], tmp = 0;
 
 int main(){
-  int me = xmp_node_num();
-  val = me;
+  int me = xmpc_this_image();
+  val    = me + 1;
 
-  printf("[START] My node is %d, val = %d, tmp = %d\n", me, val, tmp);
+  printf("[START] My image is %d, val = %d, tmp = %d\n", me, val, tmp);
 
-  xmp_sync_all(&status);
+  xmp_sync_all(NULL);
 
-  if(me == 1){
-    tmp = val:[2];  // get
-    val:[2] = val;  // put
+  if(xmpc_this_image() == 0){
+    tmp = val:[1];  // get
+    val:[1] = val;  // put
   }
-  xmp_sync_all(&status);
+  xmp_sync_all(NULL);
   
-  printf("[END]   My node is %d, val = %d, tmp = %d\n", me, val, tmp);
+  printf("[END]   My image is %d, val = %d, tmp = %d\n", me, val, tmp);
   
   return 0;
 }

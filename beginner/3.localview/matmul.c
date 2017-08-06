@@ -75,21 +75,22 @@ void mul_dmat(int start_i, int end_i, int start_k, int end_k){
 }
 
 void gather_data(){
-  if(xmp_node_num() == 1){
-    C[0:N/2][N/2:N/2] = C[0:N/2][N/2:N/2]:[2];
-    C[N/2:N/2][0:N/2] = C[N/2:N/2][0:N/2]:[3];
-    C[N/2:N/2][N/2:N/2] = C[N/2:N/2][N/2:N/2]:[4];
+  if(xmpc_this_image() == 0){
+    C[0:N/2][N/2:N/2] = C[0:N/2][N/2:N/2]:[1];
+    C[N/2:N/2][0:N/2] = C[N/2:N/2][0:N/2]:[2];
+    C[N/2:N/2][N/2:N/2] = C[N/2:N/2][N/2:N/2]:[3];
   }
 }
 
 void move_data(){
-  if(xmp_node_num() == 1){
+  if(xmpc_this_image() == 0){
     // Please implement THIS
   }
 }
 
 int main(){
   double time;
+  int me = xmpc_this_image();
 
   if(xmp_num_nodes() != 4){
     fprintf(stderr, "This program must be executed by 4 nodes.");
@@ -97,7 +98,7 @@ int main(){
   }
 
   // Serial Implementation
-  if(xmp_node_num() == 1){
+  if(me == 0){
     init_dmat();            // matrix initialization
 
     start_timer();
@@ -112,7 +113,7 @@ int main(){
   // End Serial Implementation
 
   // Parallel Implementation
-  if(xmp_node_num() == 1)
+  if(me == 0)
     init_dmat();
 
   xmp_sync_all(NULL);
@@ -120,16 +121,16 @@ int main(){
   move_data();               // transports data
   xmp_sync_all(NULL);
 
-  if(xmp_node_num() == 1){
+  if(me == 0){
     mul_dmat(0, N/2, 0, N/2);
   }
-  else if(xmp_node_num() == 2){
+  else if(me == 1){
     mul_dmat(0, N/2, N/2, N);
   }
-  else if(xmp_node_num() == 3){
+  else if(me == 2){
     mul_dmat(N/2, N, 0, N/2);
   } 
-  else if(xmp_node_num() == 4){
+  else if(me == 3){
     mul_dmat(N/2, N, N/2, N);
   }
   xmp_sync_all(NULL);
@@ -140,7 +141,7 @@ int main(){
   xmp_sync_all(NULL);
   time = end_timer();
 
-  if(xmp_node_num() == 1){
+  if(me == 0){
     printf("\nParallel:\n");
     printf("  Time = %f sec\n", time);
     printf("  verify : %.3f\n", verify());

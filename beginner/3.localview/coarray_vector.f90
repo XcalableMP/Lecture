@@ -19,16 +19,16 @@ program coarray_vector
   
   sync all
 
-  if (me .eq. 1) then
+  if (this_image() == 1) then
      a(1:3) = a(6:8)[2] ! Get
-     write (*, "(A10, I2)") "My node is", me
+     write (*, "(A10, I2)") "My image is", me
      do i=1, 10
         write(*,"(A5,I2,A5,I2)") "a(",i,") = ", a(i)
      end do
      
      b(1:10:2) = b(1:10:2)[2];  ! Get
      write(*,*) ""
-     write (*, "(A10, I2)") "My node is", me
+     write (*, "(A10, I2)") "My image is", me
      do i=1, 10
         write(*,"(A5,I2,A5,I2)") "b(",i,") = ", b(i)
      end do
@@ -38,9 +38,9 @@ program coarray_vector
 
   sync all
 
-  if (me .eq. 2) then
+  if (this_image() == 2) then
      write(*,*) ""
-     write (*, "(A10, I2)") "My node is", me
+     write (*, "(A10, I2)") "My image is", me
      do i=1, 10
         write(*,*) c(:,i)
      end do
