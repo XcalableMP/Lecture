@@ -1,6 +1,5 @@
 program init
-  integer :: a(10) 
-  integer :: i
+  integer :: a(10), i
 
   do i=1,10
     a(i)=i 
