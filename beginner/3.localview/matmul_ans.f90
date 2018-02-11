@@ -4,7 +4,7 @@ program matmul_ans
   integer,parameter :: N = 1024
   real :: A(N,N)[*], B(N,N)[*], C(N,N)[*]  ! c = a x b
   integer :: t1, t2, t_rate, t_max, diff
-  integer :: i, seedsize
+  integer :: seedsize
   integer,allocatable:: seed(:)
 
   if (num_images() .ne. 4 ) then
